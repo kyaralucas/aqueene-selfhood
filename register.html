@@ -164,14 +164,23 @@
                   </button>
                 </div>
 
-                <div class="confirm" id="confirmBox" hidden>
-                  <h2 class="confirm__title">You're registered.</h2>
-                  <p class="confirm__text" id="confirmText"></p>
-                  <div class="actions actions--single">
-                    <a class="btn btn--ghost btn--full" href="resting-space.html">Go to the resting space</a>
-                  </div>
-                </div>
+                
               </div>
+
+                        <!-- STEP 3 (Confirmation) -->
+            <div class="step" id="step3" aria-live="polite">
+                <div class="confirm confirm--full">
+                <h2 class="confirm__title">You’re registered.</h2>
+                <p class="confirm__text" id="confirmText"></p>
+            
+                <div class="actions actions--single">
+                    <a class="btn btn--primary btn--full" href="resting-space.html">Visit digital resting space</a>
+                    <a class="btn btn--ghost btn--full" href="index.html">Back to home</a>
+                </div>
+                </div>
+            </div>
+  
+
             </form>
           </section>
 
@@ -254,23 +263,26 @@
       }
 
       function setStep(stepNumber) {
-        const s1 = $("#step1");
-        const s2 = $("#step2");
+        const steps = [$("#step1"), $("#step2"), $("#step3")].filter(Boolean);
+
+        steps.forEach((el) => el.classList.remove("step--active"));
+        const target = $("#step" + stepNumber);
+        if (target) target.classList.add("step--active");
+
+        // Stepper dots (only shows 1 & 2 in UI, but that’s fine)
         const d1 = $("#stepDot1");
         const d2 = $("#stepDot2");
+        if (d1 && d2) {
+            if (stepNumber === 1) {
+            d1.classList.add("stepper__item--active");
+            d2.classList.remove("stepper__item--active");
+            } else {
+            d1.classList.remove("stepper__item--active");
+            d2.classList.add("stepper__item--active");
+            }
+  }
+}
 
-        if (stepNumber === 1) {
-          s1.classList.add("step--active");
-          s2.classList.remove("step--active");
-          d1.classList.add("stepper__item--active");
-          d2.classList.remove("stepper__item--active");
-        } else {
-          s1.classList.remove("step--active");
-          s2.classList.add("step--active");
-          d1.classList.remove("stepper__item--active");
-          d2.classList.add("stepper__item--active");
-        }
-      }
 
       function validEmail(email) {
         // Simple, friendly validation (not overly strict)
@@ -355,15 +367,10 @@
         localStorage.setItem(STORAGE_KEY_SUBS, JSON.stringify(regs));
 
         // Show confirmation UI
-        $("#confirmText").textContent = `You selected ${slot}. Add text here if we want to send confirmation e-mail?`;
-        $("#confirmBox").hidden = false;
+        $("#confirmText").textContent = `You selected ${slot}. Adjust text here si nos ke manda un confirmation email ofzo?`;
+        setStep(3);
+        document.querySelector("#step3")?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-        // Disable buttons to avoid double submits (for now)
-        $("#submitBtn").disabled = true;
-        $("#backBtn").disabled = true;
-
-        // Scroll to confirmation gently
-        $("#confirmBox").scrollIntoView({ behavior: "smooth", block: "start" });
       });
     </script>
   </body>
