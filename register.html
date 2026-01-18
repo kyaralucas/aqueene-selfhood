@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register — Exhibition Opening</title>
+    <meta
+      name="description"
+      content="Register for a timeslot for the exhibition opening."
+    />
+
+    <!-- Open Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- (Optional) Keep Cinzel if you’re using it on homepage titles -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="hero hero--compact" role="banner">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="hero__veil hero__veil--soft" aria-hidden="true"></div>
+
+      <div class="hero__content">
+        <div class="hero__topline">
+          <p class="hero__meta">AQUEENE WILSON</p>
+          <p class="hero__meta hero__meta--right">SELFHOOD ACT II</p>
+        </div>
+
+        <main id="main" class="hero__center hero__center--compact">
+          <h1 class="hero__title hero__title--small">
+            <span>Choose</span>
+            <span>Your</span>
+            <span>Moment</span>
+          </h1>
+
+          <p class="hero__fineprint hero__fineprint--tight">
+            Registration is free. Limited capacity per timeslot to keep the experience soft and unrushed.
+          </p>
+
+          <!-- Stepper -->
+          <div class="stepper" aria-label="Registration progress">
+            <div class="stepper__item stepper__item--active" id="stepDot1">
+              <span class="stepper__dot" aria-hidden="true"></span>
+              <span class="stepper__label">Details</span>
+            </div>
+            <div class="stepper__line" aria-hidden="true"></div>
+            <div class="stepper__item" id="stepDot2">
+              <span class="stepper__dot" aria-hidden="true"></span>
+              <span class="stepper__label">Timeslot</span>
+            </div>
+          </div>
+
+          <!-- Form card -->
+          <section class="glass" aria-label="Registration form">
+            <form id="regForm" novalidate>
+              <!-- STEP 1 -->
+              <div class="step step--active" id="step1">
+                <label class="field">
+                  <span class="field__label">What name should we welcome you by?</span>
+                  <input
+                    class="field__input"
+                    type="text"
+                    name="name"
+                    autocomplete="name"
+                    placeholder="Your name"
+                    required
+                  />
+                  <span class="field__hint" id="nameHint"></span>
+                </label>
+
+                <label class="field">
+                  <span class="field__label">Email</span>
+                  <input
+                    class="field__input"
+                    type="email"
+                    name="email"
+                    autocomplete="email"
+                    placeholder="you@email.com"
+                    required
+                  />
+                  <span class="field__hint" id="emailHint"></span>
+                </label>
+
+                <label class="field">
+                  <span class="field__label">What does rest mean to you?</span>
+                  <textarea
+                    class="field__input field__input--area"
+                    name="restWord"
+                    rows="2"
+                    placeholder="One word or a short phrase (optional)"
+                  ></textarea>
+                  <span class="field__hint">Will be added anonymously to the our digital resting garden.</span>
+                </label>
+
+                <div class="actions">
+                  <a class="btn btn--ghost btn--full" href="index.html">Back to home</a>
+                  <button class="btn btn--primary btn--full" type="button" id="nextBtn">
+                    Next
+                  </button>
+                </div>
+              </div>
+
+              <!-- STEP 2 -->
+              <div class="step" id="step2" aria-live="polite">
+                <p class="mini-title" id="welcomeLine"></p>
+
+                <fieldset class="slotset">
+                  <legend class="slotset__legend">Select a timeslot</legend>
+
+                  <label class="slot">
+                    <input class="slot__radio" type="radio" name="slot" value="18:00–18:30" required />
+                    <span class="slot__card">
+                      <span class="slot__time">18:00–18:30</span>
+                      <span class="slot__note">Soft arrival</span>
+                    </span>
+                  </label>
+
+                  <label class="slot">
+                    <input class="slot__radio" type="radio" name="slot" value="18:30–19:00" />
+                    <span class="slot__card">
+                      <span class="slot__time">18:30–19:00</span>
+                      <span class="slot__note">Breath &amp; settle</span>
+                    </span>
+                  </label>
+
+                  <label class="slot">
+                    <input class="slot__radio" type="radio" name="slot" value="19:00–19:30" />
+                    <span class="slot__card">
+                      <span class="slot__time">19:00–19:30</span>
+                      <span class="slot__note">Slow looking</span>
+                    </span>
+                  </label>
+
+                  <label class="slot">
+                    <input class="slot__radio" type="radio" name="slot" value="19:30–20:00" />
+                    <span class="slot__card">
+                      <span class="slot__time">19:30–20:00</span>
+                      <span class="slot__note">Last light</span>
+                    </span>
+                  </label>
+
+                  <p class="field__hint" id="slotHint">Choose one slot to continue.</p>
+                </fieldset>
+
+                <div class="actions">
+                  <button class="btn btn--ghost btn--full" type="button" id="backBtn">
+                    Back
+                  </button>
+                  <button class="btn btn--primary btn--full" type="submit" id="submitBtn">
+                    Submit
+                  </button>
+                </div>
+
+                <div class="confirm" id="confirmBox" hidden>
+                  <h2 class="confirm__title">You're registered.</h2>
+                  <p class="confirm__text" id="confirmText"></p>
+                  <div class="actions actions--single">
+                    <a class="btn btn--ghost btn--full" href="resting-space.html">Go to the resting space</a>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </section>
+
+          <!-- Word garden -->
+          <!-- <section class="garden" aria-label="Word garden">
+            <div class="garden__head">
+              <h2 class="garden__title">Word garden</h2>
+              <p class="garden__sub">
+                Words offered anonymously. (Shared “live” will come once we add a backend.)
+              </p>
+            </div>
+
+            <div class="garden__bed" id="gardenBed" aria-live="polite"></div>
+
+            <button class="garden__clear" type="button" id="clearGardenBtn">
+              Clear (this device)
+            </button>
+          </section> -->
+        </main>
+      </div>
+    </header>
+
+    <script>
+      // ------- Helpers -------
+      const $ = (sel) => document.querySelector(sel);
+      const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+      const STORAGE_KEY_WORDS = "rest_word_garden_v1";
+      const STORAGE_KEY_SUBS = "rest_registrations_v1";
+
+      function readWords() {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEY_WORDS) || "[]");
+        } catch {
+          return [];
+        }
+      }
+      function writeWords(words) {
+        localStorage.setItem(STORAGE_KEY_WORDS, JSON.stringify(words));
+      }
+      function addWord(word) {
+        const clean = (word || "").trim();
+        if (!clean) return;
+
+        const words = readWords();
+        // Keep it tidy (no huge essays)
+        const clipped = clean.length > 36 ? clean.slice(0, 36) + "…" : clean;
+
+        words.push({
+          text: clipped,
+          t: Date.now(),
+          // random-ish "seed" for styling placement
+          s: Math.floor(Math.random() * 1000000),
+        });
+
+        // Keep last 80 so it stays light
+        const kept = words.slice(-80);
+        writeWords(kept);
+        // renderGarden();
+      }
+
+      function renderGarden() {
+        const bed = $("#gardenBed");
+        const words = readWords();
+        bed.innerHTML = "";
+
+        words.forEach((w, idx) => {
+          const chip = document.createElement("span");
+          chip.className = "garden__chip";
+          chip.textContent = w.text;
+
+          // Soft scattered placement (still readable)
+          const x = (w.s % 100) / 100; // 0..1
+          const y = ((w.s / 100) % 100) / 100;
+          chip.style.setProperty("--x", x.toFixed(2));
+          chip.style.setProperty("--y", y.toFixed(2));
+          chip.style.animationDelay = `${Math.min(idx * 35, 900)}ms`;
+
+          bed.appendChild(chip);
+        });
+      }
+
+      function setStep(stepNumber) {
+        const s1 = $("#step1");
+        const s2 = $("#step2");
+        const d1 = $("#stepDot1");
+        const d2 = $("#stepDot2");
+
+        if (stepNumber === 1) {
+          s1.classList.add("step--active");
+          s2.classList.remove("step--active");
+          d1.classList.add("stepper__item--active");
+          d2.classList.remove("stepper__item--active");
+        } else {
+          s1.classList.remove("step--active");
+          s2.classList.add("step--active");
+          d1.classList.remove("stepper__item--active");
+          d2.classList.add("stepper__item--active");
+        }
+      }
+
+      function validEmail(email) {
+        // Simple, friendly validation (not overly strict)
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+      }
+
+      // ------- Wire up UI -------
+    //   renderGarden();
+
+    //   $("#clearGardenBtn").addEventListener("click", () => {
+    //     localStorage.removeItem(STORAGE_KEY_WORDS);
+    //     // renderGarden();
+    //   });
+
+      $("#nextBtn").addEventListener("click", () => {
+        const name = $("#regForm").elements["name"].value.trim();
+        const email = $("#regForm").elements["email"].value.trim();
+        const restWord = $("#regForm").elements["restWord"].value.trim();
+
+        // validate
+        let ok = true;
+
+        if (!name) {
+          $("#nameHint").textContent = "Please enter your name.";
+          ok = false;
+        } else {
+          $("#nameHint").textContent = "✓";
+        }
+
+        if (!email || !validEmail(email)) {
+          $("#emailHint").textContent = "Please enter a valid email.";
+          ok = false;
+        } else {
+          $("#emailHint").textContent = "✓";
+        }
+
+        if (!ok) return;
+
+        // Add to word garden immediately (anonymized)
+        // if (restWord) addWord(restWord);
+
+        // Personal welcome line (only on-device)
+        $("#welcomeLine").textContent = `Welcome, ${name}. Choose your arrival time.`;
+
+        setStep(2);
+        // small focus assist
+        const firstRadio = document.querySelector('input[name="slot"]');
+        if (firstRadio) firstRadio.focus({ preventScroll: true });
+      });
+
+      $("#backBtn").addEventListener("click", () => setStep(1));
+
+      $("#regForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const form = e.currentTarget;
+        const name = form.elements["name"].value.trim();
+        const email = form.elements["email"].value.trim();
+        const slot = form.elements["slot"].value;
+
+        if (!slot) {
+          $("#slotHint").textContent = "Please select a timeslot.";
+          return;
+        }
+        $("#slotHint").textContent = "";
+
+        // Store a local “registration” (for design/testing)
+        const payload = {
+          name,
+          email,
+          slot,
+          createdAt: new Date().toISOString(),
+        };
+
+        let regs = [];
+        try {
+          regs = JSON.parse(localStorage.getItem(STORAGE_KEY_SUBS) || "[]");
+        } catch {
+          regs = [];
+        }
+        regs.push(payload);
+        localStorage.setItem(STORAGE_KEY_SUBS, JSON.stringify(regs));
+
+        // Show confirmation UI
+        $("#confirmText").textContent = `You selected ${slot}. Add text here if we want to send confirmation e-mail?`;
+        $("#confirmBox").hidden = false;
+
+        // Disable buttons to avoid double submits (for now)
+        $("#submitBtn").disabled = true;
+        $("#backBtn").disabled = true;
+
+        // Scroll to confirmation gently
+        $("#confirmBox").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    </script>
+  </body>
+</html>
