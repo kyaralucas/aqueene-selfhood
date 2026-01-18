@@ -25,10 +25,10 @@
   body {
     margin: 0;
     color: var(--ink);
-    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     line-height: 1.5;
     background: var(--bg);
-  }
+  }  
   
   /* accessibility */
   .skip-link {
@@ -64,12 +64,12 @@
   .hero__bg {
     position: absolute;
     inset: 0;
-    /* Put your reference image in the same folder and name it "hero.jpg" */
-    background-image: url("hero.tiff");
+    /* Put your reference image in the same folder and name it "hero.png" */
+    background-image: url("hero.jpg");
     background-size: cover;
     background-position: center;
     transform: scale(1.08);
-    filter: blur(10px) saturate(1.05) contrast(1.05);
+    filter: blur(4px) saturate(1.05) contrast(1.05);
   }
   
   .hero__veil {
