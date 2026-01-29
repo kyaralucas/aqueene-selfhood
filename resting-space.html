@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SELFHOOD · Ora Mi Topa Mi Mes</title>
+    <meta
+      name="description"
+      content=""
+    />
+
+    <!-- Fonts (safe for GitHub Pages) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Inter:opsz,wght@14..32,300;14..32,500;14..32,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"
+    rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <style>
+
+
+/* Text & audio controls */
+/* Enter overlay */
+.enter {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-content: center;   /* centers the whole group */
+  justify-items: center;   /* centers items horizontally */
+  gap: 14px;               /* controls spacing between title + button */
+  padding: 6vh 7vw;
+  text-align: center;
+
+}
+
+.enter.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.enter__btn {
+  font: inherit;
+  padding: 14px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.35);
+  color: rgba(255,255,255,0.92);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+}
+
+/* Text stage */
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 6vh 7vw;
+  text-align: center;
+}
+
+.line {
+  max-width: 42ch;
+  font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: clamp(18px, 2.2vw, 26px);
+  line-height: 1.35;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 20px 70px rgba(0,0,0,0.6);
+
+  /* organic entrance */
+  opacity: 0;
+  transform: translateY(14px) scale(0.99);
+  filter: blur(10px);
+  transition:
+    opacity 1800ms ease,
+    transform 1800ms cubic-bezier(.2,.8,.2,1),
+    filter 1800ms ease;
+}
+
+/* shown state */
+.line.is-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  animation: drift 4s ease-in-out infinite alternate;
+  animation-delay: 1.8s;     /* match your transition duration */
+  animation-fill-mode: both;
+}
+
+
+/* subtle living drift while visible */
+.line.is-in {
+  animation: drift 4s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from { transform: translateY(0) translateX(-0.4%) scale(1); }
+  to   { transform: translateY(-2px) translateX(0.4%) scale(1.005); }
+}
+
+
+/* Audio controls */
+#audioUI[hidden] {
+  display: none !important;
+}
+
+
+.audioUI {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  gap: 10px;
+}
+
+
+.audioUI__btn {
+  font: inherit;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.28);
+  color: rgba(255,255,255,0.88);
+  cursor: pointer;
+}
+
+.audioUI__btn--icon {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+
+  color: rgba(154, 160, 12, 0.95);
+    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(154, 160, 12, 0.55);
+    backdrop-filter: blur(6px);
+}
+
+
+.audioUI__btn--icon .icon {
+  width: 24px;
+  height: 24px;
+}
+
+.audioUI__btn--icon .icon--muted {
+  display: none;
+}
+
+/* when muted, swap icons */
+.audioUI__btn--icon.is-muted .icon--on {
+  display: none;
+}
+.audioUI__btn--icon.is-muted .icon--muted {
+  display: block;
+}
+
+
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .line, .enter { transition: none; }
+  .line.is-in { animation: none; }
+}
+
+
+  </style>
+
+  <body>
+
+    <!-- HERO -->
+    <header class="hero" role="banner">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="hero__veil" aria-hidden="true"></div>
+
+      <div class="hero__content">
+        <div class="hero__topline">
+          <p class="hero__meta">Aqueene Wilson</p>
+          <p class="hero__meta hero__meta--right">Selfhood Act II</p>
+        </div>
+
+        <main id="main" class="hero__center">
+            
+
+            <!-- Enter overlay -->
+        <div class="enter" id="enter">
+           
+            
+            <img class="hero__logo" src="ora_mi_topa_mi_mes.svg" alt="Ora Mi Topa Mi Mes">
+
+            <p class="hero__meta">
+            <span class="hero__kicker">Digital Resting Space</span>
+            <span class="hero__fineprint" style="margin: 0; text-transform: none;">
+                A gentle soundscape will play as you enter.
+            </span>
+            </p>
+
+            <div class="hero__actions">
+              
+              <button class="btn btn--primary" id="enterBtn">Enter</button>
+              <a class="btn btn--ghost" href="index.html">Go Back</a>
+            </div>
+
+        </div>
+
+                <!-- Text stage (messages will appear here) -->
+                <div class="stage" id="stage" aria-live="polite">
+
+
+                  <!-- Audio + controls -->
+                  <div class="audioUI" id="audioUI" hidden>
+                    <button class="audioUI__btn audioUI__btn--icon" id="muteBtn" aria-pressed="false" aria-label="Mute">
+                        <!-- Speaker ON -->
+                        <svg class="icon icon--on" viewBox="0 0 24 24" aria-hidden="true">
+                          <path fill="currentColor" d="M3 10v4h4l5 4V6L7 10H3z"></path>
+                          <path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"></path>
+                          <path fill="currentColor" d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path>
+                        </svg>
+                      
+                        <!-- Speaker MUTED -->
+                        <svg class="icon icon--muted" viewBox="0 0 24 24" aria-hidden="true">
+                          <path fill="currentColor" d="M3 10v4h4l5 4V6L7 10H3z"></path>
+                          <path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.28l2.5 2.5V12z"></path>
+                          <path fill="currentColor" d="M19 12l2-2-1.4-1.4-2 2-2-2L14.2 9.6l2 2-2 2L15.6 15l2-2 2 2L21 13.6 19 12z"></path>
+                        </svg>
+                      </button>
+                      
+                    <!-- <button class="audioUI__btn" id="stopBtn">Stop</button> -->
+                    <a class="btn btn--ghost" href="index.html">Go Back</a>
+                </div>
+
+                </div>
+      
+                    
+              
+                    <audio id="bgAudio" preload="auto" loop>
+                        <source src="audio.mp3" type="audio/mpeg" />
+                    </audio>
+
+
+                 <script>
+                    const enter = document.getElementById("enter");
+                    const enterBtn = document.getElementById("enterBtn");
+                    const stage = document.getElementById("stage");
+                  
+                    const audio = document.getElementById("bgAudio");
+                    const audioUI = document.getElementById("audioUI");
+                    const muteBtn = document.getElementById("muteBtn");
+                    const stopBtn = document.getElementById("stopBtn");
+
+                    const prompts = [
+                      "What are some ways that you can grant yourself the rest you deserve?",
+                      "What is your rest plan?",
+                      "Who are you when you are not working?",
+                      "In what way do others show up for your softness?",
+                      "What does a life without taking care of others look like?",
+                      "How do you recharge?"
+                    ];
+
+                    const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)]; 
+
+                    const messages = [
+                      "Welcome. Stay as long as you like.",
+                      "Take a moment.",
+                      randomPrompt
+                    ];
+                  
+                    const GAP_MS = 10000;
+                  
+                    function showMessage(text) {
+                      // remove only the previous message, not the whole stage
+                      const prev = stage.querySelector(".line");
+                      if (prev) prev.remove();
+
+                      const el = document.createElement("div");
+                      el.className = "line";
+                      el.textContent = text;
+
+                      // insert message before the controls so controls stay at the bottom
+                      stage.insertBefore(el, audioUI);
+
+                      // force transition to run
+                      el.getBoundingClientRect();
+                      el.classList.add("is-in");
+                    }
+
+
+                  
+                    async function runSequence() {
+                      for (let i = 0; i < messages.length; i++) {
+                        showMessage(messages[i]);
+                        await new Promise(r => setTimeout(r, GAP_MS));
+                      }
+                    }
+                  
+                    enterBtn.addEventListener("click", async () => {
+                        enter.classList.add("is-hidden");
+
+                        // show the controls only now
+                        audioUI.hidden = false;
+
+                        try {
+                          audio.muted = false;
+                          await audio.play();
+                        } catch (e) {
+                          console.warn("Audio play blocked:", e);
+                        }
+
+                        runSequence();
+                      });
+
+                  
+                    muteBtn.addEventListener("click", async () => {
+                        const willMute = !audio.muted;
+                        audio.muted = willMute;
+
+                        muteBtn.classList.toggle("is-muted", willMute);
+                        muteBtn.setAttribute("aria-pressed", String(willMute));
+                        muteBtn.setAttribute("aria-label", willMute ? "Unmute" : "Mute");
+
+                        if (!willMute && audio.paused) {
+                            try { await audio.play(); } catch (e) {}
+                        }
+                    });
+
+                  
+                    stopBtn.addEventListener("click", () => {
+                      audio.pause();
+                      audio.currentTime = 0;
+                    });
+                  </script>
+
+
+          </main>
+          
+          
+      </div>
+
+      
+    </header>
+
+   
+
+
+    <footer class="footer">
+      <div class="wrap">
+        <!-- <p class="footer__text"> -->
+          <div class="section__divider" aria-hidden="true"></div>
+          <!-- <span>© 2026 — Aqueene Wilson</span> <br> -->
+          </p>
+          
+          <p class="footer__text">
+          <span>Direction by Aqueene Wilson <br>
+            Musical composition, arrangement and songwriting done by WATRA <br>
+            Production, mix and mastering by Martin Buitenweg <br>
+            Co-composer: Toto Boroto <br>
+            </span>
+          </p>
+
+        </p>
+        
+      </div>
+    </footer>
+  </body>
+</html>

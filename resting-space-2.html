@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Save The Date — Exhibition Opening</title>
+    <meta
+      name="description"
+      content="Register for a timeslot for the exhibition opening exploring resting, selfhood, and Caribbean women."
+    />
+
+    <!-- Fonts (safe for GitHub Pages) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Inter:opsz,wght@14..32,300;14..32,500;14..32,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap"
+    rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <style>
+
+
+
+.hero_test {
+    min-height: 100svh;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    place-items: stretch;
+  }
+
+.hero_test__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* 1) Big drifting glow (very visible) */
+.hero_test::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  z-index: 2;
+  pointer-events: none;
+
+  background:
+    radial-gradient(900px 700px at 30% 35%, rgba(255,255,255,0.22), transparent 60%),
+    radial-gradient(900px 700px at 80% 75%, rgba(154,160,12,0.22), transparent 65%),
+    radial-gradient(900px 700px at 55% 50%, rgba(255,255,255,0.12), transparent 70%);
+
+  filter: blur(73px);
+  opacity: 0.9;
+  mix-blend-mode: screen;
+
+  animation: glowDrift 7s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes glowDrift {
+  from { transform: translate3d(-3%, -2%, 0) scale(1); }
+  to   { transform: translate3d(3%, 2%, 0)  scale(1.06); }
+}
+
+
+.hero_test::after {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  z-index: 3;
+  pointer-events: none;
+
+  /* Two soft wave layers stacked */
+  background:
+    /* slower, wider waves */
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.10) 0px,
+      rgba(255,255,255,0.00) 28px,
+      rgba(255,255,255,0.08) 56px,
+      rgba(255,255,255,0.00) 92px
+    ),
+    /* faster, finer waves */
+    repeating-linear-gradient(
+      to bottom,
+      rgba(154,160,12,0.10) 0px,
+      rgba(154,160,12,0.00) 18px,
+      rgba(255,255,255,0.06) 44px,
+      rgba(255,255,255,0.00) 78px
+    );
+
+  /* Different scales per layer = less uniform */
+  background-size: 100% 220px, 100% 140px;
+  background-position: 0 0, 0 0;
+
+  /* Softens bands into “water/heat shimmer” */
+  filter: blur(4px);
+  opacity: 0.28;
+  /* mix-blend-mode: overlay; */
+
+  animation: wavesA 30s linear infinite;
+  will-change: background-position, background-size, transform;
+}
+
+/* Organic motion: move at different speeds + slightly “breathe” the scale */
+@keyframes wavesA {
+  0% {
+    background-position: 0 0, 0 0;
+    background-size: 100% 220px, 100% 140px;
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    background-position: 0 180px, 0 320px;
+    background-size: 102% 240px, 98% 155px;
+    transform: translate3d(0.4%, -0.2%, 0);
+  }
+  100% {
+    background-position: 0 360px, 0 640px;
+    background-size: 100% 220px, 100% 140px;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+
+@keyframes waveMove {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 260px; }
+}
+
+
+@keyframes waveMove {
+  0%   { background-position: 0 0;   transform: translate3d(0, 0, 0); }
+  100% { background-position: 600px 220px; transform: translate3d(1%, -1%, 0); }
+}
+
+
+/* Text & audio controls */
+/* Enter overlay */
+.enter {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-content: center;   /* centers the whole group */
+  justify-items: center;   /* centers items horizontally */
+  gap: 14px;               /* controls spacing between title + button */
+  padding: 6vh 7vw;
+  text-align: center;
+
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: opacity 600ms ease;
+}
+
+.enter.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.enter__btn {
+  font: inherit;
+  padding: 14px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.35);
+  color: rgba(255,255,255,0.92);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+}
+
+/* Text stage */
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 6vh 7vw;
+  text-align: center;
+}
+
+.line {
+  max-width: 42ch;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: clamp(18px, 2.2vw, 26px);
+  line-height: 1.35;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 20px 70px rgba(0,0,0,0.6);
+
+  /* organic entrance */
+  opacity: 0;
+  transform: translateY(14px) scale(0.99);
+  filter: blur(10px);
+  transition:
+    opacity 1200ms ease,
+    transform 1200ms cubic-bezier(.2,.8,.2,1),
+    filter 1200ms ease;
+}
+
+/* shown state */
+.line.is-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* subtle living drift while visible */
+.line.is-in {
+  animation: drift 7s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from { transform: translateY(0) translateX(-0.4%) scale(1); }
+  to   { transform: translateY(-2px) translateX(0.4%) scale(1.005); }
+}
+
+/* Audio controls */
+.audioUI {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  z-index: 30;
+  display: flex;
+  gap: 10px;
+}
+
+.audioUI__btn {
+  font: inherit;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.28);
+  color: rgba(255,255,255,0.88);
+  cursor: pointer;
+}
+
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .line, .enter { transition: none; }
+  .line.is-in { animation: none; }
+}
+
+
+  </style>
+
+  <body>
+
+   
+
+    <div class="hero_test" id="hero">
+        <img class="hero_test__img" src="hero_1.jpg" alt="" />
+      
+        <!-- Enter overlay -->
+        <div class="enter" id="enter">
+           
+
+            <img class="hero__logo" src="ora_mi_topa_mi_mes.svg" alt="Ora Mi Topa Mi Mes">
+
+            <p class="hero__meta">
+            <span class="hero__kicker">Digital Resting Space</span>
+            <span class="hero__fineprint" style="margin: 0; text-transform: none;">
+                A gentle soundscape will play as you enter.
+            </span>
+            </p>
+
+            <div class="hero__actions">
+              
+          <button class="btn btn--primary" id="enterBtn">Enter</button>
+        </div>
+          
+        </div>
+      
+        <!-- Text stage (messages will appear here) -->
+        <div class="stage" id="stage" aria-live="polite"></div>
+      
+        <!-- Audio + controls -->
+        <div class="audioUI" id="audioUI" hidden>
+          <button class="audioUI__btn" id="muteBtn" aria-pressed="false">Mute</button>
+          <button class="audioUI__btn" id="stopBtn">Stop</button>
+        </div>
+      
+        <audio id="bgAudio" preload="auto" loop>
+          <source src="audio.mp3" type="audio/mpeg" />
+        </audio>
+      </div>
+      
+
+      <script>
+        const enter = document.getElementById("enter");
+        const enterBtn = document.getElementById("enterBtn");
+        const stage = document.getElementById("stage");
+      
+        const audio = document.getElementById("bgAudio");
+        const audioUI = document.getElementById("audioUI");
+        const muteBtn = document.getElementById("muteBtn");
+        const stopBtn = document.getElementById("stopBtn");
+      
+        const messages = [
+          "We invite you to arrive slowly—into an evening shaped by rest and selfhood.",
+          "Timeslots run between 19:00 and 21:00.",
+          "Please arrive on time for your chosen slot.",
+          "Drinks and snacks are available in the adjacent room—stay as long as you like."
+        ];
+      
+        const GAP_MS = 5000;
+      
+        function showMessage(text) {
+          stage.innerHTML = "";               // show one at a time (clean + calm)
+          const el = document.createElement("div");
+          el.className = "line";
+          el.textContent = text;
+          stage.appendChild(el);
+      
+          // trigger transition on next frame
+          requestAnimationFrame(() => el.classList.add("is-in"));
+        }
+      
+        async function runSequence() {
+          for (let i = 0; i < messages.length; i++) {
+            showMessage(messages[i]);
+            await new Promise(r => setTimeout(r, GAP_MS));
+          }
+        }
+      
+        enterBtn.addEventListener("click", async () => {
+          // hide overlay
+          enter.classList.add("is-hidden");
+          audioUI.hidden = false;
+      
+          // start audio (allowed because user clicked)
+          try {
+            audio.muted = false;
+            await audio.play();
+          } catch (e) {
+            // If it fails (rare), user can press mute/unmute to retry
+            console.warn("Audio play blocked:", e);
+          }
+      
+          // start text sequence
+          runSequence();
+        });
+      
+        muteBtn.addEventListener("click", async () => {
+          const willMute = !audio.muted;
+          audio.muted = willMute;
+          muteBtn.textContent = willMute ? "Unmute" : "Mute";
+          muteBtn.setAttribute("aria-pressed", String(willMute));
+      
+          // If unmuting and audio is paused, try to play again
+          if (!willMute && audio.paused) {
+            try { await audio.play(); } catch (e) {}
+          }
+        });
+      
+        stopBtn.addEventListener("click", () => {
+          audio.pause();
+          audio.currentTime = 0;
+        });
+      </script>
+      
+
+
+  </body>
+</html>

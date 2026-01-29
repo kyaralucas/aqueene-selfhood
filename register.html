@@ -17,12 +17,6 @@
       rel="stylesheet"
     />
 
-    <!-- (Optional) Keep Cinzel if you’re using it on homepage titles -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -40,11 +34,21 @@
         </div>
 
         <main id="main" class="hero__center hero__center--compact">
-          <h1 class="hero__title hero__title--small">
-            <span>Choose</span>
-            <span>Your</span>
-            <span>Moment</span>
-          </h1>
+            
+          <!-- <h1 class="hero__title hero__title--small">
+            <span>CHOOSE</span>
+            <span>YOUR</span>
+            <span>MOMENT</span>
+          </h1> -->
+
+          <img class="hero__logo" src="ora_mi_topa_mi_mes.svg" alt="Ora Mi Topa Mi Mes">
+          <p class="hero__meta">
+            <span class="hero__kicker">Opening Exhibition</span>
+            <span class="hero__date">20 February 2026 · 19:00 - 21:00</span>
+            <span class="hero__place">
+                Sentro · St. Rosaweg 13 · Willemstad, Curaçao
+            </span>
+        </p>
 
           <p class="hero__fineprint hero__fineprint--tight">
             Registration is free. Limited capacity per timeslot to keep the experience soft and unrushed.
@@ -69,7 +73,7 @@
               <!-- STEP 1 -->
               <div class="step step--active" id="step1">
                 <label class="field">
-                  <span class="field__label">What name should we welcome you by?</span>
+                  <span class="field__label">Name</span>
                   <input
                     class="field__input"
                     type="text"
@@ -95,14 +99,14 @@
                 </label>
 
                 <label class="field">
-                  <span class="field__label">What does rest mean to you?</span>
+                  <span class="field__label">How do you recharge? (Optional)</span>
                   <textarea
                     class="field__input field__input--area"
                     name="restWord"
                     rows="2"
-                    placeholder="One word or a short phrase (optional)"
+                    placeholder="One word or a short phrase. Will be added anonymously to digital resting space."
                   ></textarea>
-                  <span class="field__hint">Will be added anonymously to the our digital resting garden.</span>
+                  <!-- <span class="field__hint"></span> -->
                 </label>
 
                 <div class="actions">
@@ -121,34 +125,34 @@
                   <legend class="slotset__legend">Select a timeslot</legend>
 
                   <label class="slot">
-                    <input class="slot__radio" type="radio" name="slot" value="18:00–18:30" required />
+                    <input class="slot__radio" type="radio" name="slot" value="19:00" required />
                     <span class="slot__card">
-                      <span class="slot__time">18:00–18:30</span>
-                      <span class="slot__note">Soft arrival</span>
+                      <span class="slot__time">19:00</span>
+                      <!-- <span class="slot__note">Soft arrival</span> -->
                     </span>
                   </label>
 
                   <label class="slot">
-                    <input class="slot__radio" type="radio" name="slot" value="18:30–19:00" />
+                    <input class="slot__radio" type="radio" name="slot" value="19:20" />
                     <span class="slot__card">
-                      <span class="slot__time">18:30–19:00</span>
-                      <span class="slot__note">Breath &amp; settle</span>
+                      <span class="slot__time">19:20</span>
+                      <!-- <span class="slot__note">Breath &amp; settle</span> -->
                     </span>
                   </label>
 
                   <label class="slot">
-                    <input class="slot__radio" type="radio" name="slot" value="19:00–19:30" />
+                    <input class="slot__radio" type="radio" name="slot" value="19:40" />
                     <span class="slot__card">
-                      <span class="slot__time">19:00–19:30</span>
-                      <span class="slot__note">Slow looking</span>
+                      <span class="slot__time">19:40</span>
+                      <!-- <span class="slot__note">Slow looking</span> -->
                     </span>
                   </label>
 
                   <label class="slot">
-                    <input class="slot__radio" type="radio" name="slot" value="19:30–20:00" />
+                    <input class="slot__radio" type="radio" name="slot" value="20:00" />
                     <span class="slot__card">
-                      <span class="slot__time">19:30–20:00</span>
-                      <span class="slot__note">Last light</span>
+                      <span class="slot__time">20:00</span>
+                      <!-- <span class="slot__note">Last light</span> -->
                     </span>
                   </label>
 
@@ -170,7 +174,7 @@
                         <!-- STEP 3 (Confirmation) -->
             <div class="step" id="step3" aria-live="polite">
                 <div class="confirm confirm--full">
-                <h2 class="confirm__title">You’re registered.</h2>
+                <h2 class="confirm__title">YOU'RE REGISTERED</h2>
                 <p class="confirm__text" id="confirmText"></p>
             
                 <div class="actions actions--single">
@@ -325,7 +329,7 @@
         // if (restWord) addWord(restWord);
 
         // Personal welcome line (only on-device)
-        $("#welcomeLine").textContent = `Welcome, ${name}. Choose your arrival time.`;
+        $("#welcomeLine").textContent = `Welcome, ${name}. Choose a timeslot to enter the exhibition space.`;
 
         setStep(2);
         // small focus assist
@@ -367,7 +371,9 @@
         localStorage.setItem(STORAGE_KEY_SUBS, JSON.stringify(regs));
 
         // Show confirmation UI
-        $("#confirmText").textContent = `You selected ${slot}. Adjust text here si nos ke manda un confirmation email ofzo?`;
+        $("#confirmText").textContent = `You selected ${slot} to enter the exhibition space. 
+        After your visit, you're warmly welcome to stay. Drinks and snacks are available in the adjacent room, 
+        and you can linger there as long as you like. The timeslots only apply to the exhibition space itself.`;
         setStep(3);
         document.querySelector("#step3")?.scrollIntoView({ behavior: "smooth", block: "start" });
 
