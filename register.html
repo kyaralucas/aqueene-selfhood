@@ -99,15 +99,15 @@
                 </label>
 
                 <label class="field">
-                  <span class="field__label">How do you recharge? (Optional)</span>
-                  <textarea
-                    class="field__input field__input--area"
-                    name="restWord"
-                    rows="2"
-                    placeholder="One word or a short phrase. Will be added anonymously to digital resting space."
-                  ></textarea>
-                  <!-- <span class="field__hint"></span> -->
-                </label>
+                    <span class="field__label" id="restPrompt">How do you recharge? (Optional)</span>
+                    <textarea
+                      class="field__input field__input--area"
+                      name="restWord"
+                      rows="4"
+                      placeholder="One word or a short phrase. Will be added anonymously to digital resting space."
+                    ></textarea>
+                  </label>
+                  
 
                 <div class="actions">
                   <a class="btn btn--ghost btn--full" href="index.html">Back to home</a>
@@ -188,83 +188,28 @@
             </form>
           </section>
 
-          <!-- Word garden -->
-          <!-- <section class="garden" aria-label="Word garden">
-            <div class="garden__head">
-              <h2 class="garden__title">Word garden</h2>
-              <p class="garden__sub">
-                Words offered anonymously. (Shared “live” will come once we add a backend.)
-              </p>
-            </div>
-
-            <div class="garden__bed" id="gardenBed" aria-live="polite"></div>
-
-            <button class="garden__clear" type="button" id="clearGardenBtn">
-              Clear (this device)
-            </button>
-          </section> -->
         </main>
       </div>
     </header>
 
     <script>
-      // ------- Helpers -------
-      const $ = (sel) => document.querySelector(sel);
-      const $$ = (sel) => Array.from(document.querySelectorAll(sel));
-      const STORAGE_KEY_WORDS = "rest_word_garden_v1";
-      const STORAGE_KEY_SUBS = "rest_registrations_v1";
 
-      function readWords() {
-        try {
-          return JSON.parse(localStorage.getItem(STORAGE_KEY_WORDS) || "[]");
-        } catch {
-          return [];
+        const prompts = [
+            "What are some ways that you can grant yourself the rest you deserve?",
+            "What is your rest plan?",
+            "Who are you when you are not working?",
+            "In what way do others show up for your softness?",
+            "What does a life without taking care of others look like?",
+            "How do you recharge?"
+        ];
+
+        const promptEl = document.getElementById("restPrompt");
+        if (promptEl) {
+        const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+        promptEl.textContent = `${randomPrompt} (Optional)`;
         }
-      }
-      function writeWords(words) {
-        localStorage.setItem(STORAGE_KEY_WORDS, JSON.stringify(words));
-      }
-      function addWord(word) {
-        const clean = (word || "").trim();
-        if (!clean) return;
 
-        const words = readWords();
-        // Keep it tidy (no huge essays)
-        const clipped = clean.length > 36 ? clean.slice(0, 36) + "…" : clean;
 
-        words.push({
-          text: clipped,
-          t: Date.now(),
-          // random-ish "seed" for styling placement
-          s: Math.floor(Math.random() * 1000000),
-        });
-
-        // Keep last 80 so it stays light
-        const kept = words.slice(-80);
-        writeWords(kept);
-        // renderGarden();
-      }
-
-      function renderGarden() {
-        const bed = $("#gardenBed");
-        const words = readWords();
-        bed.innerHTML = "";
-
-        words.forEach((w, idx) => {
-          const chip = document.createElement("span");
-          chip.className = "garden__chip";
-          chip.textContent = w.text;
-
-          // Soft scattered placement (still readable)
-          const x = (w.s % 100) / 100; // 0..1
-          const y = ((w.s / 100) % 100) / 100;
-          chip.style.setProperty("--x", x.toFixed(2));
-          chip.style.setProperty("--y", y.toFixed(2));
-          chip.style.animationDelay = `${Math.min(idx * 35, 900)}ms`;
-
-          bed.appendChild(chip);
-        });
-      }
 
       function setStep(stepNumber) {
         const steps = [$("#step1"), $("#step2"), $("#step3")].filter(Boolean);
@@ -293,14 +238,6 @@
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
       }
 
-      // ------- Wire up UI -------
-    //   renderGarden();
-
-    //   $("#clearGardenBtn").addEventListener("click", () => {
-    //     localStorage.removeItem(STORAGE_KEY_WORDS);
-    //     // renderGarden();
-    //   });
-
       $("#nextBtn").addEventListener("click", () => {
         const name = $("#regForm").elements["name"].value.trim();
         const email = $("#regForm").elements["email"].value.trim();
@@ -324,9 +261,6 @@
         }
 
         if (!ok) return;
-
-        // Add to word garden immediately (anonymized)
-        // if (restWord) addWord(restWord);
 
         // Personal welcome line (only on-device)
         $("#welcomeLine").textContent = `Welcome, ${name}. Choose a timeslot to enter the exhibition space.`;

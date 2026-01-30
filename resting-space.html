@@ -177,7 +177,241 @@
 }
 
 
-  </style>
+/* Notes */
+/* -----------------------------
+   Floating notes field
+-------------------------------- */
+.notes {
+  position: absolute;
+  inset: 0;
+  z-index: 12;                 /* above background, below audioUI */
+  pointer-events: auto;
+}
+
+/* One drifting card at a time */
+.note {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(240px, 52vw);
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+  z-index: 12;
+
+  /* IMPORTANT: the "resting" transform is centered */
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+
+/* Inner shell: visuals + spawn/exit animation */
+.note__shell {
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(0,0,0,0.22);
+  box-shadow: 0 22px 70px rgba(0,0,0,0.45);
+  backdrop-filter: blur(6px);
+
+  color: rgba(255,255,255,0.92);
+  text-align: left;
+
+  /* spawn default */
+  opacity: 0;
+  transform: translate(var(--spawn-x, 0px), var(--spawn-y, 0px)) scale(0.96);
+  filter: blur(14px);
+
+  transition:
+    opacity 1200ms ease,
+    transform 1200ms cubic-bezier(.2,.8,.2,1),
+    filter 1200ms ease,
+    background 600ms ease,
+    border-color 600ms ease;
+}
+
+/* Spawned in */
+.note.is-in .note__shell {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+  filter: blur(0);
+}
+
+/* Outer roam */
+.note.is-in {
+  animation: noteRoam 26s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  animation-fill-mode: both; /* holds 0% transform cleanly */
+  will-change: transform;
+}
+
+/* Inner bob (very subtle) */
+.note__bob {
+  will-change: transform;
+  animation: noteBob 6.5s ease-in-out infinite alternate;
+}
+
+.note.is-focus .note__bob {
+  animation-play-state: paused;
+}
+
+/* Starts at center (no snap), gently wanders, returns to center */
+@keyframes noteRoam {
+  0%   { transform: translate(-50%, -50%) rotate(0deg); }
+  18%  { transform: translate(-62%, -56%) rotate(-0.25deg); }
+  40%  { transform: translate(-40%, -60%) rotate(0.15deg); }
+  62%  { transform: translate(-38%, -44%) rotate(0.35deg); }
+  82%  { transform: translate(-60%, -42%) rotate(-0.10deg); }
+  100% { transform: translate(-50%, -50%) rotate(0deg); }
+}
+
+
+@keyframes noteBob {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(0, -6px); }
+}
+
+/* Pause drift while reading */
+.note.is-focus {
+  z-index: 40;
+  animation-play-state: paused;
+}
+
+/* Exit */
+.note.is-out .note__shell {
+  opacity: 0;
+  transform: translate(var(--spawn-x, 0px), var(--spawn-y, 0px)) scale(0.98);
+  filter: blur(16px);
+}
+
+/* Hover/focus styling */
+.note:hover .note__shell,
+.note:focus-visible .note__shell {
+  border-color: rgba(255,255,255,0.28);
+  background: rgba(0,0,0,0.28);
+}
+
+.note.is-focus .note__shell {
+  border-color: rgba(154, 160, 12, 0.55);
+  background: rgba(0,0,0,0.34);
+}
+
+/* Hover/focus styling (apply to the shell so corners/shadow match radius) */
+.note:hover .note__shell,
+.note:focus-visible .note__shell {
+  border-color: rgba(255,255,255,0.28);
+  background: rgba(0,0,0,0.28);
+  box-shadow: 0 26px 80px rgba(0,0,0,0.55); /* still rounded because it's on the shell */
+}
+
+.note.is-focus .note__shell {
+  border-color: rgba(154, 160, 12, 0.55);
+  background: rgba(0,0,0,0.34);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.6);
+}
+
+
+.note.is-focus {
+  z-index: 40;
+  animation-play-state: paused;      /* stop drifting while reading */
+  border-color: rgba(154, 160, 12, 0.55);
+  background: rgba(0,0,0,0.34);
+}
+
+/* tiny label */
+.note__kicker {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.72;
+  margin-bottom: 8px;
+}
+
+/* short text */
+.note__short {
+  font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.35;
+  opacity: 0.92;
+}
+
+/* read more section */
+.note__more {
+  margin-top: 10px;
+  display: none;
+  opacity: 0.9;
+}
+
+.note.is-expanded .note__more {
+  display: block;
+}
+
+.note__prompt {
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.35;
+  opacity: 0.92;
+}
+
+.note__answer {
+  margin-top: 10px;
+  font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  opacity: 0.92;
+}
+
+/* Make the action area breathe */
+.note__actions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+
+.note__btn {
+  font: inherit;
+  font-size: 12px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  /* border: 1px solid rgba(255,255,255,0.16); */
+  /* background: rgba(0,0,0,0.18); */
+  /* color: rgba(255,255,255,0.88); */
+
+  color: rgba(154, 160, 12, 0.95);
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(154, 160, 12, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+.note__btn--accent {
+  color: rgba(154, 160, 12, 0.95);
+  border-color: rgba(154, 160, 12, 0.55);
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(154, 160, 12, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+/* Smooth transform keyframes (no CSS custom prop animation) */
+@keyframes noteDrift {
+  0%   { transform: translate(-58%, -54%) rotate(-0.35deg); }
+  25%  { transform: translate(-44%, -56%) rotate(0.15deg); }
+  50%  { transform: translate(-42%, -46%) rotate(0.35deg); }
+  75%  { transform: translate(-56%, -44%) rotate(-0.1deg); }
+  100% { transform: translate(-58%, -54%) rotate(-0.35deg); }
+}
+
+
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .note { animation: none; }
+}
+
+
+</style>
 
   <body>
 
@@ -193,65 +427,68 @@
         </div>
 
         <main id="main" class="hero__center">
-            
 
-            <!-- Enter overlay -->
-        <div class="enter" id="enter">
-           
-            
-            <img class="hero__logo" src="ora_mi_topa_mi_mes.svg" alt="Ora Mi Topa Mi Mes">
+                <!-- Enter overlay -->
+                <div class="enter" id="enter">
+                  
+                    <img class="hero__logo" src="ora_mi_topa_mi_mes.svg" alt="Ora Mi Topa Mi Mes">
 
-            <p class="hero__meta">
-            <span class="hero__kicker">Digital Resting Space</span>
-            <span class="hero__fineprint" style="margin: 0; text-transform: none;">
-                A gentle soundscape will play as you enter.
-            </span>
-            </p>
+                    <p class="hero__meta">
+                    <span class="hero__kicker">Digital Resting Space</span>
+                    <span class="hero__fineprint" style="margin: 0; text-transform: none;">
+                        A gentle soundscape will play as you enter.
+                    </span>
+                    </p>
 
-            <div class="hero__actions">
-              
-              <button class="btn btn--primary" id="enterBtn">Enter</button>
-              <a class="btn btn--ghost" href="index.html">Go Back</a>
-            </div>
+                    <div class="hero__actions">
+                      <button class="btn btn--primary" id="enterBtn">Enter</button>
+                      <a class="btn btn--ghost" href="index.html">Go Back</a>
+                    </div>
 
-        </div>
+                </div>
 
                 <!-- Text stage (messages will appear here) -->
                 <div class="stage" id="stage" aria-live="polite">
 
+                  <!-- Notes field (hidden until intro completes) -->
+                  <div class="notes" id="notes" hidden aria-label="Reflections on rest"></div>
 
                   <!-- Audio + controls -->
-                  <div class="audioUI" id="audioUI" hidden>
-                    <button class="audioUI__btn audioUI__btn--icon" id="muteBtn" aria-pressed="false" aria-label="Mute">
-                        <!-- Speaker ON -->
-                        <svg class="icon icon--on" viewBox="0 0 24 24" aria-hidden="true">
-                          <path fill="currentColor" d="M3 10v4h4l5 4V6L7 10H3z"></path>
-                          <path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"></path>
-                          <path fill="currentColor" d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path>
-                        </svg>
-                      
-                        <!-- Speaker MUTED -->
-                        <svg class="icon icon--muted" viewBox="0 0 24 24" aria-hidden="true">
-                          <path fill="currentColor" d="M3 10v4h4l5 4V6L7 10H3z"></path>
-                          <path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.28l2.5 2.5V12z"></path>
-                          <path fill="currentColor" d="M19 12l2-2-1.4-1.4-2 2-2-2L14.2 9.6l2 2-2 2L15.6 15l2-2 2 2L21 13.6 19 12z"></path>
-                        </svg>
+                    <div class="audioUI" id="audioUI" hidden>
+
+                      <!-- Speaker control button -->
+                      <button class="audioUI__btn audioUI__btn--icon" id="muteBtn" aria-pressed="false" aria-label="Mute">
+
+                          <!-- Speaker ON -->
+                          <svg class="icon icon--on" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="currentColor" d="M3 10v4h4l5 4V6L7 10H3z"></path>
+                            <path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"></path>
+                            <path fill="currentColor" d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path>
+                          </svg>
+                        
+                          <!-- Speaker MUTED -->
+                          <svg class="icon icon--muted" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="currentColor" d="M3 10v4h4l5 4V6L7 10H3z"></path>
+                            <path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.28l2.5 2.5V12z"></path>
+                            <path fill="currentColor" d="M19 12l2-2-1.4-1.4-2 2-2-2L14.2 9.6l2 2-2 2L15.6 15l2-2 2 2L21 13.6 19 12z"></path>
+                          </svg>
                       </button>
-                      
-                    <!-- <button class="audioUI__btn" id="stopBtn">Stop</button> -->
-                    <a class="btn btn--ghost" href="index.html">Go Back</a>
-                </div>
+    
+                      <!-- Go back home button -->
+                      <a class="btn btn--ghost" href="index.html">Go Back</a>
+                    </div>
 
                 </div>
       
                     
-              
-                    <audio id="bgAudio" preload="auto" loop>
-                        <source src="audio.mp3" type="audio/mpeg" />
-                    </audio>
+                <!-- Load audio file -->
+                  <audio id="bgAudio" preload="auto" loop>
+                      <source src="audio.mp3" type="audio/mpeg" />
+                  </audio>
 
 
                  <script>
+                    // Javascript helpers
                     const enter = document.getElementById("enter");
                     const enterBtn = document.getElementById("enterBtn");
                     const stage = document.getElementById("stage");
@@ -259,52 +496,212 @@
                     const audio = document.getElementById("bgAudio");
                     const audioUI = document.getElementById("audioUI");
                     const muteBtn = document.getElementById("muteBtn");
-                    const stopBtn = document.getElementById("stopBtn");
+                    const notes = document.getElementById("notes");
+
 
                     const prompts = [
-                      "What are some ways that you can grant yourself the rest you deserve?",
-                      "What is your rest plan?",
-                      "Who are you when you are not working?",
-                      "In what way do others show up for your softness?",
-                      "What does a life without taking care of others look like?",
-                      "How do you recharge?"
+                        "What are some ways that you can grant yourself the rest you deserve?",
+                        "What is your rest plan?",
+                        "Who are you when you are not working?",
+                        "In what way do others show up for your softness?",
+                        "What does a life without taking care of others look like?",
+                        "How do you recharge?"
                     ];
+
+                    const reflections = [
+                          {
+                            prompt: "What are some ways that you can grant yourself the rest you deserve?",
+                            answer: "I put my phone in another room and let myself be unreachable."
+                          },
+                          {
+                            prompt: "What is your rest plan?",
+                            answer: "A slow morning, a long walk, then doing absolutely nothing on purpose."
+                          },
+                          {
+                            prompt: "Who are you when you are not working?",
+                            answer: "Someone who notices light on the wall and forgets the time."
+                          },
+                          {
+                            prompt: "In what way do others show up for your softness?",
+                            answer: "They don’t rush me. They listen without fixing."
+                          },
+                          {
+                            prompt: "What does a life without taking care of others look like?",
+                            answer: "Quiet choices, clean edges, and room to hear myself again."
+                          },
+                          {
+                            prompt: "How do you recharge?",
+                            answer: "Water, silence, and one small task at a time."
+                          }
+                    ];
+
 
                     const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)]; 
 
-                    const messages = [
-                      "Welcome. Stay as long as you like.",
-                      "Take a moment.",
-                      randomPrompt
-                    ];
-                  
-                    const GAP_MS = 10000;
-                  
-                    function showMessage(text) {
-                      // remove only the previous message, not the whole stage
-                      const prev = stage.querySelector(".line");
-                      if (prev) prev.remove();
-
-                      const el = document.createElement("div");
-                      el.className = "line";
-                      el.textContent = text;
-
-                      // insert message before the controls so controls stay at the bottom
-                      stage.insertBefore(el, audioUI);
-
-                      // force transition to run
-                      el.getBoundingClientRect();
-                      el.classList.add("is-in");
-                    }
-
 
                   
-                    async function runSequence() {
-                      for (let i = 0; i < messages.length; i++) {
-                        showMessage(messages[i]);
-                        await new Promise(r => setTimeout(r, GAP_MS));
-                      }
-                    }
+                              
+            // Intro lines (exactly as you asked)
+            const introMessages = [
+              "Welcome, stay as long as you like.",
+              "Take a moment and reflect on rest."
+            ];
+
+            const GAP_MS = 10000;
+
+            // Keep your existing blur-in message function
+            function showMessage(text) {
+              const prev = stage.querySelector(".line");
+              if (prev) prev.remove();
+
+              const el = document.createElement("div");
+              el.className = "line";
+              el.textContent = text;
+
+              stage.insertBefore(el, notes); // keep notes behind messages
+              el.getBoundingClientRect();
+              el.classList.add("is-in");
+            }
+
+
+            function shuffle(arr) {
+                const copy = [...arr];
+                for (let i = copy.length - 1; i > 0; i--) {
+                  const j = Math.floor(Math.random() * (i + 1));
+                  [copy[i], copy[j]] = [copy[j], copy[i]];
+                }
+                return copy;
+            }
+
+            let reflectionQueue = [];
+let currentNoteEl = null;
+
+function getNextReflection() {
+  if (reflectionQueue.length === 0) reflectionQueue = shuffle(reflections);
+  return reflectionQueue.shift();
+}
+
+function spawnSingleNote(reflection) {
+  notes.innerHTML = "";
+
+  const note = document.createElement("button");
+  note.type = "button";
+  note.className = "note";
+
+  // Organic spawn offset (for shell in/out)
+  const sx = (Math.random() * 36 - 18).toFixed(1);  // -18..18px
+  const sy = (Math.random() * 28 - 14).toFixed(1);  // -14..14px
+  note.style.setProperty("--spawn-x", `${sx}px`);
+  note.style.setProperty("--spawn-y", `${sy}px`);
+
+
+  // Drift delay variance
+  note.style.setProperty("--delay", `${Math.random() * 2.2}s`);
+
+
+  // Position bounds (avoid edges + leave audio controls room)
+
+  note.innerHTML = `
+    <div class="note__bob">
+      <div class="note__shell" role="group" aria-label="Reflection on rest">
+        <div class="note__kicker">Reflection</div>
+
+        <div class="note__prompt">${reflection.prompt}</div>
+        <div class="note__answer">${reflection.answer}</div>
+
+        <div class="note__actions">
+          <button class="note__btn note__btn--accent" type="button" data-action="close">
+            NEXT
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+
+  // Spawn in: stagger a touch so it feels like it "arrives"
+  const delay = 450 + Math.random() * 700;
+  setTimeout(() => note.classList.add("is-in"), delay);
+
+  // Interactions
+  note.addEventListener("click", (e) => {
+    const actionEl = e.target.closest("[data-action]");
+    const action = actionEl?.getAttribute("data-action");
+
+    note.classList.add("is-focus");
+
+    if (action === "close") {
+      closeAndRotate(note);
+      return;
+    }
+
+  });
+
+  note.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeAndRotate(note);
+  });
+
+  notes.appendChild(note);
+  currentNoteEl = note;
+}
+
+function closeAndRotate(note) {
+  if (!note) return;
+
+  // Avoid double-trigger
+  if (note.classList.contains("is-out")) return;
+
+  note.classList.remove("is-focus", "is-expanded");
+  note.classList.add("is-out");
+
+  // Wait for exit transition then replace
+  const EXIT_MS = 900;
+  setTimeout(() => {
+    // If it’s already been replaced, do nothing
+    if (currentNoteEl !== note) return;
+
+    const next = getNextReflection();
+    spawnSingleNote(next);
+  }, EXIT_MS);
+}
+
+function startNotesLoop() {
+  notes.hidden = false;
+  reflectionQueue = shuffle(reflections);
+  spawnSingleNote(getNextReflection());
+}
+
+
+
+      // Helper: short snippet
+      function clampText(str, n = 70) {
+        if (!str) return "";
+        return str.length > n ? str.slice(0, n - 1) + "…" : str;
+      }
+
+
+      async function runIntroThenNotes() {
+          // Ensure notes are hidden during intro
+          notes.hidden = true;
+
+          for (let i = 0; i < introMessages.length; i++) {
+            showMessage(introMessages[i]);
+            await new Promise(r => setTimeout(r, GAP_MS));
+          }
+
+          // Fade out last line (reuse your organic feel)
+          const prev = stage.querySelector(".line");
+          if (prev) prev.remove();
+
+          // Show the notes
+          notes.hidden = false;
+          startNotesLoop();
+      }
+
+
+
+                  
+                   
                   
                     enterBtn.addEventListener("click", async () => {
                         enter.classList.add("is-hidden");
@@ -319,7 +716,7 @@
                           console.warn("Audio play blocked:", e);
                         }
 
-                        runSequence();
+                        runIntroThenNotes();
                       });
 
                   
@@ -337,10 +734,6 @@
                     });
 
                   
-                    stopBtn.addEventListener("click", () => {
-                      audio.pause();
-                      audio.currentTime = 0;
-                    });
                   </script>
 
 
@@ -349,30 +742,25 @@
           
       </div>
 
-      
     </header>
 
    
 
-
+    <!-- Footer with credits -->
     <footer class="footer">
       <div class="wrap">
-        <!-- <p class="footer__text"> -->
-          <div class="section__divider" aria-hidden="true"></div>
-          <!-- <span>© 2026 — Aqueene Wilson</span> <br> -->
-          </p>
-          
-          <p class="footer__text">
-          <span>Direction by Aqueene Wilson <br>
-            Musical composition, arrangement and songwriting done by WATRA <br>
-            Production, mix and mastering by Martin Buitenweg <br>
-            Co-composer: Toto Boroto <br>
-            </span>
-          </p>
 
-        </p>
-        
+          <div class="section__divider" aria-hidden="true"></div>
+          
+            <p class="footer__text">
+              <span>Direction by Aqueene Wilson <br>
+                Musical composition, arrangement and songwriting done by WATRA <br>
+                Production, mix and mastering by Martin Buitenweg <br>
+                Co-composer: Toto Boroto <br>
+              </span>
+            </p>
       </div>
     </footer>
+
   </body>
 </html>
