@@ -267,8 +267,8 @@
 
         setStep(2);
         // small focus assist
-        const firstRadio = document.querySelector('input[name="slot"]');
-        if (firstRadio) firstRadio.focus({ preventScroll: true });
+        // const firstRadio = document.querySelector('input[name="slot"]');
+        // if (firstRadio) firstRadio.focus({ preventScroll: true });
       });
 
       $("#backBtn").addEventListener("click", () => setStep(1));
@@ -309,7 +309,7 @@
         After your visit, you're warmly welcome to stay. Drinks and snacks are available in the adjacent room, 
         and you can linger there as long as you like. The timeslots only apply to the exhibition space itself.`;
         setStep(3);
-        document.querySelector("#step3")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.querySelector("#step3")?.scrollIntoView({ behavior: "auto", block: "start" });
 
       });
     </script>
