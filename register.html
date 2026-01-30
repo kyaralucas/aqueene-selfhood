@@ -194,6 +194,9 @@
 
     <script>
 
+        const $ = (sel) => document.querySelector(sel);
+
+
         const prompts = [
             "What are some ways that you can grant yourself the rest you deserve?",
             "What is your rest plan?",
@@ -238,7 +241,9 @@
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
       }
 
-      $("#nextBtn").addEventListener("click", () => {
+      const nextBtn = document.getElementById("nextBtn");
+
+      nextBtn.addEventListener("click", () => {
         const name = $("#regForm").elements["name"].value.trim();
         const email = $("#regForm").elements["email"].value.trim();
         const restWord = $("#regForm").elements["restWord"].value.trim();
@@ -302,7 +307,6 @@
           regs = [];
         }
         regs.push(payload);
-        localStorage.setItem(STORAGE_KEY_SUBS, JSON.stringify(regs));
 
         // Show confirmation UI
         $("#confirmText").textContent = `You selected ${slot} to enter the exhibition space. 
